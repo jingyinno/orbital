@@ -9,7 +9,7 @@
       .controller('DashboardTodoCtrl', DashboardTodoCtrl);
 
   /** @ngInject */
-  function DashboardTodoCtrl($scope, baConfig) {
+  function DashboardTodoCtrl($scope, baConfig, $http) {
 
     $scope.transparent = baConfig.theme.blur;
     var dashboardColors = baConfig.colors.dashboard;
@@ -23,18 +23,33 @@
       return colors[i];
     }
 
+    // <p id="date"></p>
+    //   <script>
+    //     n =  new Date();
+    //     y = n.getFullYear();
+    //     m = n.getMonth() + 1;
+    //     d = n.getDate();
+    //   </script>
+    
+    //getting student id e00*****
+    $scope.studID = $scope.profileData.data.Results[0].UserID;
+//    console.log("id here:");
+//    console.log($scope.studID);
+    
     $scope.todoList = [
-      { text: 'Check me out' },
-      { text: 'Lorem ipsum dolor sit amet, possit denique oportere at his, etiam corpora deseruisse te pro' },
-      { text: 'Ex has semper alterum, expetenda dignissim' },
-      { text: 'Vim an eius ocurreret abhorreant, id nam aeque persius ornatus.' },
-      { text: 'Simul erroribus ad usu' },
-      { text: 'Ei cum solet appareat, ex est graeci mediocritatem' },
-      { text: 'Get in touch with akveo team' },
-      { text: 'Write email to business cat' },
-      { text: 'Have fun with blur admin' },
-      { text: 'What do you think?' },
+      //document.getElementById("date").innerHTML = m + "." + d + "." + y;
+      { text: 'Print CS2107 lecture notes' },
+      { text: 'Revise GES chapter 4y' },
+      { text: 'Do CS2010 PS3' },
     ];
+
+   $http.get('/phpscripts/index.php?userID=$scope.studID').then(function(todoData){
+     $scope.todoData = todoData;
+       console.log("todo data:");
+       console.log($scope.todoData);
+        }, function(errorMsg) {
+            console.log("no todo");
+        });  
 
     $scope.todoList.forEach(function(item) {
       item.color = getRandomColor();
